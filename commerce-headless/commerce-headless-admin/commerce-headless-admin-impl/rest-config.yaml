@@ -1,0 +1,7 @@
+apiDir: "../commerce-headless-admin-api/src/main/java"
+apiPackagePath: "com.liferay.commerce.headless.admin"
+application:
+  baseURI: "/commerce-headless-admin"
+  className: "CommerceHeadlessAdminApplication"
+  name: "commerce-headless-admin-application"
+author: "Igor Beslic"
