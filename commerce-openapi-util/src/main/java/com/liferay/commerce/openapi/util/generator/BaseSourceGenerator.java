@@ -46,10 +46,19 @@ public abstract class BaseSourceGenerator {
 	protected String getClassSourcePath(
 		String moduleOutputPath, String classSourceName, String classPackage) {
 
+		return getPath(
+			moduleOutputPath, "/src/main/java", classSourceName, classPackage);
+	}
+
+	protected String getPath(
+		String moduleOutputPath, String subpath, String classSourceName,
+		String classPackage) {
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(moduleOutputPath);
-		sb.append("/src/main/java/");
+		sb.append(subpath);
+		sb.append("/");
 		sb.append(classPackage.replace(".", "/"));
 		sb.append("/");
 
@@ -86,6 +95,14 @@ public abstract class BaseSourceGenerator {
 		finally {
 			reader.close();
 		}
+	}
+
+	protected String getTestClassSourcePath(
+		String moduleOutputPath, String classSourceName, String classPackage) {
+
+		return getPath(
+			moduleOutputPath, "/src/testIntegration/java", classSourceName,
+			classPackage);
 	}
 
 	protected void writeSource(String content, String fileName)
