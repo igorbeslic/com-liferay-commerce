@@ -172,6 +172,8 @@ public class OSGiRESTModuleGenerator extends BaseSourceGenerator {
 
 			_writeApplicationSource();
 
+			_writeTestSources();
+
 			if ("true".equals(
 					_configuration.getProperty(
 						"osgi.module.generator.embed.message.body." +
@@ -311,6 +313,13 @@ public class OSGiRESTModuleGenerator extends BaseSourceGenerator {
 			openApi);
 
 		resourceGenerator.writeClassSources();
+	}
+
+	private void _writeTestSources() throws IOException {
+		TestModuleGenerator testModuleGenerator = new TestModuleGenerator(
+			_configuration);
+
+		testModuleGenerator.generate();
 	}
 
 	private static final String _TEMPLATE_FILE_APPLICATION =
