@@ -118,6 +118,16 @@ public class Method {
 		return _requestBody;
 	}
 
+	public Content getRequestBodyContent(String mimeType) {
+		for (Content content : _requestBody) {
+			if (mimeType.equals(content.getMimeType())) {
+				return content;
+			}
+		}
+
+		return null;
+	}
+
 	public List<Response> getResponses() {
 		return _responses;
 	}
@@ -200,8 +210,26 @@ public class Method {
 		return false;
 	}
 
+	public boolean hasPathParams() {
+		for (Parameter parameter : getParameters()) {
+			if (parameter.isPathParameter()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public boolean hasResponseContent() {
 		return _hasResponseContent;
+	}
+
+	public boolean isHttpPostMethod() {
+		if ("POST".equals(_httpMethod)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

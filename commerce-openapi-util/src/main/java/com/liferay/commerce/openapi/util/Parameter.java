@@ -58,6 +58,14 @@ public class Parameter {
 		return _schema;
 	}
 
+	public boolean isPathParameter() {
+		if ("path".equals(_location)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isRequired() {
 		return _required;
 	}
