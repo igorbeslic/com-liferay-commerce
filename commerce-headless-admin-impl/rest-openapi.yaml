@@ -1117,7 +1117,7 @@ paths:
       tags:
       - Account
     post:
-      operationId: upsertAddress
+      operationId: upsertAccountAddress
       parameters:
       - examples:
           externalId:
@@ -2522,7 +2522,7 @@ paths:
       - language
   "/order/{id}/address":
     get:
-      operationId: getAddress
+      operationId: getOrderAddress
       parameters:
       - examples:
           externalId:
@@ -2577,7 +2577,7 @@ paths:
       tags:
       - Order
     post:
-      operationId: upsertAddress
+      operationId: upsertOrderAddress
       parameters:
       - examples:
           externalId:
