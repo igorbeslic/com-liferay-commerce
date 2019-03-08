@@ -1,0 +1,5059 @@
+components:
+  parameters:
+    groupQueryParam:
+      explode: true
+      in: query
+      name: groupId
+      required: true
+      schema:
+        description: Group to filter (Liferay site)
+        example: 30130
+        format: int64
+        minimum: 0
+        type: integer
+      style: form
+    idPathParam:
+      examples:
+        externalId:
+          summary: External idenfitifer
+          value: ext-uniqueId
+        localId:
+          summary: Local identifier
+          value: '23456'
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        description: The resource Id, or external reference code Id if it's prefixed
+          with ext-
+        minLength: 1
+        type: string
+      style: simple
+  responses:
+    NotFound:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/Error"
+      description: The specified resource was not found
+    UnauthorizedError:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/Error"
+      description: Authentication information is missing or invalid
+  schemas:
+    Account:
+      properties:
+        addresses:
+          example:
+          - city: Diamond Bar
+            commerceCountryId: 30130
+            commerceRegionId: 30234
+            defaultBilling: true
+            defaultShipping: true
+            description: right stairs, first room on the left
+            id: 31130
+            latitude: 33.9976884
+            longitude: -117.8144595
+            name: Alessio Antonio Rendina
+            phoneNumber: "(123) 456 7890"
+            street1: 1400 Montefino Ave
+            street2: 1st floor
+            street3: suite 200
+            zip: '91765'
+          items:
+            "$ref": "#/components/schemas/Address"
+          type: array
+        business:
+          type: boolean
+        emailAddresses:
+          example:
+          - joe.1@commerce.com
+          - joe.2@commerce.com
+          - joe.3@commerce.com
+          items:
+            format: email
+            type: string
+          type: array
+        externalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        logoId:
+          example: 20078
+          format: int64
+          minimum: 0
+          type: integer
+        name:
+          example: Account Name
+          type: string
+        organizationId:
+          example: 20078
+          format: int64
+          minimum: 0
+          type: integer
+        personal:
+          type: boolean
+        root:
+          type: boolean
+        taxId:
+          example: Abcd1234
+          type: string
+        type:
+          example: Personal
+          type: string
+        userIds:
+          example:
+          - 20001237
+          - 20210282
+          - 50441007
+          items:
+            format: int64
+            type: integer
+          type: array
+      required:
+      - emailAddresses
+      - externalReferenceCode
+      - name
+      - taxId
+      - userIds
+      type: object
+    Address:
+      properties:
+        city:
+          example: Diamond Bar
+          type: string
+        commerceCountryId:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        commerceRegionId:
+          example: 30234
+          format: int64
+          minimum: 0
+          type: integer
+        defaultBilling:
+          type: boolean
+        defaultShipping:
+          type: boolean
+        description:
+          example: right stairs, first room on the left
+          type: string
+        id:
+          example: 31130
+          format: int64
+          minimum: 0
+          type: integer
+        latitude:
+          example: 33.9976884
+          format: double
+          type: number
+        longitude:
+          example: -117.8144595
+          format: double
+          type: number
+        name:
+          example: Alessio Antonio Rendina
+          type: string
+        phoneNumber:
+          example: "(123) 456 7890"
+          type: string
+        street1:
+          example: 1400 Montefino Ave
+          type: string
+        street2:
+          example: 1st floor
+          type: string
+        street3:
+          example: suite 200
+          type: string
+        zip:
+          example: '91765'
+          type: string
+      required:
+      - city
+      - commerceCountryId
+      - name
+      - street1
+      type: object
+    Country:
+      properties:
+        billingAllowed:
+          type: boolean
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        name:
+          additionalProperties:
+            type: string
+          example:
+            en_US: Croatia
+            hr_HR: Hrvatska
+            hu_HU: Horvatorszag
+          type: object
+        numericISOCode:
+          example: 191
+          format: int32
+          type: integer
+        regions:
+          example:
+          - active: true
+            code: CA
+            commerceCountryId: 30130
+            id: 30234
+            name: California
+            priority: 1.1
+          - active: true
+            code: TX
+            commerceCountryId: 30130
+            id: 30243
+            name: Texas
+            priority: 1.2
+          items:
+            "$ref": "#/components/schemas/Region"
+          type: array
+        shippingAllowed:
+          type: boolean
+        subjectToVAT:
+          type: boolean
+        threeLettersISOCode:
+          example: HRV
+          type: string
+        twoLettersISOCode:
+          example: HR
+          type: string
+      required:
+      - name
+      - numericISOCode
+      - threeLettersISOCode
+      - twoLettersISOCode
+      type: object
+    Currency:
+      properties:
+        code:
+          example: USD
+          type: string
+        formatPattern:
+          additionalProperties:
+            type: string
+          example:
+            en_US: "$###,##0.00"
+          type: object
+        id:
+          example: 30130
+          format: int64
+          type: integer
+        maxFractionDigits:
+          example: 2
+          format: int32
+          type: integer
+        minFractionDigits:
+          example: 2
+          format: int32
+          type: integer
+        name:
+          additionalProperties:
+            type: string
+          example:
+            en_US: US Dollar
+          type: object
+        primary:
+          type: boolean
+        rate:
+          example: 1
+          format: bigdecimal
+          minimum: 0
+          type: number
+        roundingMode:
+          example: HALF_EVEN
+          type: string
+      required:
+      - code
+      - formatPattern
+      - name
+      - rate
+      - roundingMode
+      type: object
+    Error:
+      properties:
+        errorCode:
+          description: Internal error code mapping
+          example: 996
+          format: int32
+          readOnly: true
+          type: integer
+        errorDescription:
+          example: Unable to find currency. Currency code should be expressed with
+            3-letter ISO 4217 format.
+          readOnly: true
+          type: string
+        message:
+          example: No CommerceCurrency exists with the key {groupId=41811, code=US
+            Dollar}
+          readOnly: true
+          type: string
+        status:
+          description: HTTP Status code
+          example: 404
+          format: int32
+          readOnly: true
+          type: integer
+      required:
+      - errorCode
+      - errorDescription
+      - message
+      - status
+      type: object
+    Inventory:
+      properties:
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        quantity:
+          example: 10
+          format: int32
+          type: integer
+        skuExternalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        skuId:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        warehouseId:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        warehouseName:
+          example: 660 Park Ave
+          type: string
+      required:
+      - quantity
+      - skuExternalReferenceCode
+      - skuId
+      - warehouseId
+      type: object
+    Order:
+      properties:
+        address:
+          additionalProperties:
+            "$ref": "#/components/schemas/Address"
+          example:
+            city: Diamond Bar
+            commerceCountryId: 30130
+            commerceRegionId: 30234
+            defaultBilling: true
+            defaultShipping: true
+            description: right stairs, first room on the left
+            id: 31130
+            latitude: 33.9976884
+            longitude: -117.8144595
+            name: Alessio Antonio Rendina
+            phoneNumber: "(123) 456 7890"
+            street1: 1400 Montefino Ave
+            street2: 1st floor
+            street3: suite 200
+            zip: '91765'
+          type: object
+        commerceAccountId:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        currency:
+          example: USD
+          type: string
+        externalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+      required:
+      - commerceAccountId
+      - currency
+      - externalReferenceCode
+      type: object
+    PriceEntry:
+      properties:
+        commercePriceListId:
+          example: 20078
+          format: int64
+          minimum: 0
+          type: integer
+        commerceProductInstanceId:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        externalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        hasTierPrice:
+          type: boolean
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        price:
+          example: 30130
+          format: bigdecimal
+          minimum: 0
+          type: number
+        promoPrice:
+          example: 30130
+          format: bigdecimal
+          minimum: 0
+          type: number
+        sku:
+          example: Blue handle, 00001l, 70cm, lifetime warranty
+          type: string
+        skuExternalReferenceCode:
+          example: CAB-34098-789-N
+          type: string
+        standardPrice:
+          type: boolean
+      required:
+      - commercePriceListId
+      - externalReferenceCode
+      - price
+      - promoPrice
+      - standardPrice
+      type: object
+    PriceList:
+      properties:
+        active:
+          type: boolean
+        commercePriceListId:
+          example: 20178
+          format: int64
+          minimum: 0
+          type: integer
+        currency:
+          example: EUR
+          type: string
+        displayDate:
+          format: date
+          type: string
+        expirationDate:
+          format: date
+          type: string
+        externalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        name:
+          example: Laptops, Beverages
+          type: string
+        neverExpire:
+          type: boolean
+        priority:
+          example: 1.2
+          format: double
+          type: number
+      required:
+      - active
+      - currency
+      - externalReferenceCode
+      - name
+      - neverExpire
+      - priority
+      type: object
+    Product:
+      properties:
+        active:
+          type: boolean
+        assetCategoryIds:
+          example:
+          - 20001237
+          - 20210282
+          - 50441007
+          items:
+            format: int32
+            type: integer
+          type: array
+        defaultSku:
+          example: Blue handle, 00001l, 70cm, lifetime warranty
+          type: string
+        description:
+          additionalProperties:
+            type: string
+          example:
+            en_US: Professional hand stainless steel saw for wood. Made to last and
+              saw forever. Made of best steel
+            hr_HR: Product Description HR
+            hu_HU: Product Description HU
+          type: object
+        externalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        name:
+          additionalProperties:
+            type: string
+          example:
+            en_US: Hand Saw
+            hr_HR: Product Name HR
+            hu_HU: Product Name HU
+          type: object
+        productTypeName:
+          example: simple
+          type: string
+        shortDescription:
+          additionalProperties:
+            type: string
+          example:
+            en_US: Hand stainless steel saw for wood
+            hr_HR: Product Short Description HR
+            hu_HU: Product Short Description HU
+          type: object
+      required:
+      - active
+      - externalReferenceCode
+      - name
+      - productTypeName
+      type: object
+    ProductOption:
+      properties:
+        description:
+          example: Description
+          type: string
+        externalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        facetable:
+          type: boolean
+        fieldType:
+          enum:
+          - checkbox
+          - checkbox_multiple
+          - date
+          - numeric
+          - radio
+          - select
+          example: select
+          type: string
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        key:
+          example: color
+          type: string
+        name:
+          example: Color
+          type: string
+        required:
+          type: boolean
+        skuContributor:
+          type: boolean
+      required:
+      - externalReferenceCode
+      - fieldType
+      - key
+      - name
+      type: object
+    ProductOptionValue:
+      properties:
+        externalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        key:
+          example: black
+          type: string
+        name:
+          example: Black
+          type: string
+        priority:
+          example: 1.2
+          format: double
+          type: number
+      required:
+      - externalReferenceCode
+      - key
+      - name
+      type: object
+    Region:
+      properties:
+        active:
+          type: boolean
+        code:
+          example: CA
+          type: string
+        commerceCountryId:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        name:
+          example: California
+          type: string
+        priority:
+          example: 1.1
+          format: double
+          minimum: 0
+          type: number
+      required:
+      - commerceCountryId
+      - name
+      type: object
+    Sku:
+      properties:
+        cost:
+          example: 101
+          format: bigdecimal
+          minimum: 0
+          type: number
+        depth:
+          example: 1.1
+          format: double
+          minimum: 0
+          type: number
+        displayDate:
+          format: date
+          type: string
+        expirationDate:
+          format: date
+          type: string
+        externalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        gtin:
+          example: '12341234'
+          type: string
+        height:
+          example: 20.2
+          format: double
+          minimum: 0
+          type: number
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        manufacturerPartNumber:
+          example: '12341234'
+          type: string
+        neverExpire:
+          type: boolean
+        price:
+          example: 101
+          format: bigdecimal
+          minimum: 0
+          type: number
+        promoPrice:
+          example: 202
+          format: bigdecimal
+          minimum: 0
+          type: number
+        published:
+          type: boolean
+        purchasable:
+          type: boolean
+        sku:
+          example: '12341234'
+          type: string
+        weight:
+          example: 1.1
+          format: double
+          minimum: 0
+          type: number
+        width:
+          example: 20.2
+          format: double
+          minimum: 0
+          type: number
+      required:
+      - externalReferenceCode
+      - sku
+      type: object
+    User:
+      properties:
+        additionalName:
+          example: G.I.
+          type: string
+        alternateName:
+          example: Joe
+          type: string
+        birthDate:
+          format: date
+          type: string
+        commerceAccountIds:
+          example:
+          - 20001237
+          - 20210282
+          - 50441007
+          items:
+            format: int64
+            type: integer
+          type: array
+        dashboardURL:
+          example: https://commerce.com/dashboardURL
+          format: uri
+          type: string
+        email:
+          example: joe@commerce.com
+          format: email
+          type: string
+        externalReferenceCode:
+          example: AB-34098-789-N
+          type: string
+        familyName:
+          example: Smith
+          type: string
+        gender:
+          example: male
+          type: string
+        givenName:
+          example: Joe
+          type: string
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        image:
+          example: https://commerce.com/userPortrait.jpg
+          format: uri
+          type: string
+        jobTitle:
+          example: Engineer
+          type: string
+        name:
+          example: G.I. Joe
+          type: string
+        profileURL:
+          example: https://commerce.com/profileURL
+          format: uri
+          type: string
+        roleNames:
+          example:
+          - Admin
+          - Power User
+          - User
+          items:
+            type: string
+          type: array
+      required:
+      - email
+      - externalReferenceCode
+      - familyName
+      - givenName
+      type: object
+    WebSite:
+      properties:
+        description:
+          example: Site for merchandise
+          type: string
+        id:
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        name:
+          example: Breccia
+          type: string
+      required:
+      - description
+      - name
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+    BearerAuth:
+      scheme: bearer
+      type: http
+    OAuth2:
+      flows:
+        authorizationCode:
+          authorizationUrl: "/oauth/authorize"
+          scopes:
+            CommerceOpenApiAdmin.admin: Grants access to admin operations
+            CommerceOpenApiAdmin.read: Grants read access
+            CommerceOpenApiAdmin.write: Grants write access
+          tokenUrl: "/oauth/token"
+      type: oauth2
+info:
+  contact:
+    email: team-commerce@liferay.com
+    name: Commerce Team
+  description: Liferay Commerce Admin API
+  license:
+    name: GNU Lesser General Public License 2.1
+    url: https://www.gnu.org/licenses/lgpl-2.1.html
+  title: Liferay Commerce Admin API
+  version: v2.0
+openapi: 3.0.0
+paths:
+  "/account/":
+    get:
+      operationId: getAccounts
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Account"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Accounts.
+      tags:
+      - Account
+    post:
+      operationId: upsertAccount
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Account"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Account"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates an Account.
+      tags:
+      - Account
+  "/account/{id}":
+    delete:
+      operationId: deleteAccount
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes an Account by ID.
+      tags:
+      - Account
+    get:
+      operationId: getAccount
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Account"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets an Account by ID.
+      tags:
+      - Account
+    put:
+      operationId: updateAccount
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Account"
+        required: true
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates an Account by ID.
+      tags:
+      - Account
+  "/account/{id}/address":
+    get:
+      operationId: getAddresses
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Address"
+                type: array
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Addresses related to an Account.
+      tags:
+      - Account
+    post:
+      operationId: upsertAddress
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Address"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Address"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates an Address.
+      tags:
+      - Account
+  "/account/{id}/order":
+    get:
+      operationId: getOrder
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Order"
+                type: array
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets the List of orders from a site related to an account
+      tags:
+      - Account
+    post:
+      operationId: upsertSku
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Order"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Order"
+          description: Created
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Order related to an Account.
+      tags:
+      - Account
+      x-liferay-context:
+      - language
+  "/address/{id}":
+    delete:
+      operationId: deleteAddress
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes an Address by ID.
+      tags:
+      - Address
+    get:
+      operationId: getAddress
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Address"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets an Address by ID.
+      tags:
+      - Address
+    put:
+      operationId: updateAddress
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Address"
+        required: true
+      responses:
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates an Address by ID.
+      tags:
+      - Address
+  "/country/":
+    get:
+      operationId: getCountries
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Country"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Countries.
+      tags:
+      - Country
+    post:
+      operationId: upsertCountry
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Country"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Country"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Country.
+      tags:
+      - Country
+  "/country/{id}":
+    delete:
+      operationId: deleteCountry
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Country by ID.
+      tags:
+      - Country
+    get:
+      operationId: getCountry
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Country"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Country by ID.
+      tags:
+      - Country
+    put:
+      operationId: updateCountry
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Country"
+        required: true
+      responses:
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Country by ID.
+      tags:
+      - Country
+  "/country/{id}/region":
+    get:
+      operationId: getRegions
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Region"
+                type: array
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Regions related to a Country.
+      tags:
+      - Country
+    post:
+      operationId: upsertRegion
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Region"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Region"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Region.
+      tags:
+      - Country
+  "/currency/":
+    get:
+      operationId: getCurrencies
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Currency"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Currencies.
+      tags:
+      - Currency
+    post:
+      operationId: upsertCurrency
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Currency"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Currency"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Currency.
+      tags:
+      - Currency
+  "/currency/{id}":
+    delete:
+      operationId: deleteCurrency
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Currency by ID.
+      tags:
+      - Currency
+    get:
+      operationId: getCurrency
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Currency"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Currency by ID.
+      tags:
+      - Currency
+    put:
+      operationId: updateCurrency
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Currency"
+        required: true
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Currency by ID.
+      tags:
+      - Currency
+  "/inventory/{id}":
+    delete:
+      operationId: deleteInventory
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Inventory by ID.
+      tags:
+      - Inventory
+    get:
+      operationId: getInventory
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Inventory"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Inventory by ID.
+      tags:
+      - Inventory
+    put:
+      operationId: updateInventory
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Inventory"
+        required: true
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Inventory by ID.
+      tags:
+      - Inventory
+  "/order":
+    get:
+      operationId: getOrders
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Order"
+                type: array
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a List of Orders from a Site.
+      tags:
+      - Order
+      x-liferay-context:
+      - language
+  "/order/{id}":
+    delete:
+      operationId: deleteOrder
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Order by ID.
+      tags:
+      - Order
+    get:
+      operationId: getOrder
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Order"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Order by ID.
+      tags:
+      - Order
+      x-liferay-context:
+      - language
+    put:
+      operationId: updateOrder
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Order"
+        required: true
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Order by ID.
+      tags:
+      - Order
+      x-liferay-context:
+      - language
+  "/order/{id}/address":
+    get:
+      operationId: getAddress
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Address"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets an Address related to an Order.
+      tags:
+      - Order
+    post:
+      operationId: upsertAddress
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Address"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Address"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates an Address.
+      tags:
+      - Order
+  "/priceEntry/":
+    get:
+      operationId: getPriceEntries
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/PriceEntry"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Price Entries.
+      tags:
+      - PriceEntry
+    post:
+      operationId: upsertPriceEntry
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/PriceEntry"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/PriceEntry"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Price Entry.
+      tags:
+      - PriceEntry
+  "/priceEntry/{id}":
+    delete:
+      operationId: deletePriceEntry
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Price Entry by ID.
+      tags:
+      - PriceEntry
+    get:
+      operationId: getPriceEntry
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/PriceEntry"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Price Entry by ID.
+      tags:
+      - PriceEntry
+    put:
+      operationId: updatePriceEntry
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/PriceEntry"
+        required: true
+      responses:
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Price Entry by ID.
+      tags:
+      - PriceEntry
+  "/priceList/":
+    get:
+      operationId: getPriceLists
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/PriceList"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Price Lists.
+      tags:
+      - PriceList
+      x-liferay-context:
+      - language
+    post:
+      operationId: upsertPriceList
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/PriceList"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/PriceList"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Price List.
+      tags:
+      - PriceList
+      x-liferay-context:
+      - language
+  "/priceList/{id}":
+    delete:
+      operationId: deletePriceList
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Price List by ID.
+      tags:
+      - PriceList
+      x-liferay-context:
+      - language
+    get:
+      operationId: getPriceList
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/PriceList"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Price List by ID.
+      tags:
+      - PriceList
+      x-liferay-context:
+      - language
+    put:
+      operationId: updatePriceList
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/PriceList"
+        required: true
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Price List by ID.
+      tags:
+      - PriceList
+      x-liferay-context:
+      - language
+  "/product/":
+    get:
+      operationId: getProducts
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Product"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Products.
+      tags:
+      - Product
+    post:
+      operationId: upsertProduct
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Product"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Product"
+          description: Created
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Product.
+      tags:
+      - Product
+      x-liferay-context:
+      - language
+  "/product/{id}":
+    delete:
+      operationId: deleteProduct
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Product by ID.
+      tags:
+      - Product
+    get:
+      operationId: getProduct
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Product"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Product by ID.
+      tags:
+      - Product
+    put:
+      operationId: updateProduct
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Product"
+        required: true
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Product by ID.
+      tags:
+      - Product
+      x-liferay-context:
+      - language
+  "/product/{id}/sku":
+    get:
+      operationId: getSkus
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Sku"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Skus related to a Product.
+      tags:
+      - Product
+    post:
+      operationId: upsertSku
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Sku"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Sku"
+          description: Created
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Sku related to a Product.
+      tags:
+      - Product
+      x-liferay-context:
+      - language
+  "/productOption/":
+    get:
+      operationId: getProductOptions
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/ProductOption"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Product Option.
+      tags:
+      - ProductOption
+      x-liferay-context:
+      - language
+    post:
+      operationId: upsertProductOption
+      parameters:
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/ProductOption"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/ProductOption"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Product Option.
+      tags:
+      - ProductOption
+      x-liferay-context:
+      - language
+  "/productOption/{id}":
+    delete:
+      operationId: deleteProductOption
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Product Option by ID.
+      tags:
+      - ProductOption
+      x-liferay-context:
+      - language
+    get:
+      operationId: getProductOption
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/ProductOption"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Product Option by ID.
+      tags:
+      - ProductOption
+      x-liferay-context:
+      - language
+    put:
+      operationId: updateProductOption
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/ProductOption"
+        required: true
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Product Option by ID.
+      tags:
+      - ProductOption
+      x-liferay-context:
+      - language
+  "/productOption/{id}/productOptionValue":
+    get:
+      operationId: getProductOptionValues
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/ProductOptionValue"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Values related to a Product Option.
+      tags:
+      - ProductOptionValue
+      x-liferay-context:
+      - language
+    post:
+      operationId: upsertProductOptionValue
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/ProductOptionValue"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/ProductOptionValue"
+          description: Created
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Value related to a Product Option.
+      tags:
+      - ProductOptionValue
+      x-liferay-context:
+      - language
+  "/productOptionValue/{id}":
+    delete:
+      operationId: deleteProductOptionValue
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Product Option Value by ID.
+      tags:
+      - ProductOptionValue
+      x-liferay-context:
+      - language
+    get:
+      operationId: getProductOptionValue
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/ProductOptionValue"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Product Option Value by ID.
+      tags:
+      - ProductOptionValue
+      x-liferay-context:
+      - language
+    put:
+      operationId: updateProductOptionValue
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/ProductOptionValue"
+        required: true
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Product Option Value by ID.
+      tags:
+      - ProductOptionValue
+      x-liferay-context:
+      - language
+  "/region/{id}":
+    delete:
+      operationId: deleteRegion
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Region by ID.
+      tags:
+      - Region
+    get:
+      operationId: getRegion
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Region"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Region by ID.
+      tags:
+      - Region
+    put:
+      operationId: updateRegion
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Region"
+        required: true
+      responses:
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Region by ID.
+      tags:
+      - Region
+  "/sku/{id}":
+    delete:
+      operationId: deleteSku
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Deletes a Sku by ID.
+      tags:
+      - Sku
+    get:
+      operationId: getSku
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Sku"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Sku by ID.
+      tags:
+      - Sku
+    put:
+      operationId: updateSku
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Sku"
+        required: true
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Updates a Sku by ID.
+      tags:
+      - Sku
+      x-liferay-context:
+      - language
+  "/sku/{id}/inventory":
+    get:
+      operationId: getInventorys
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/Inventory"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Inventories.
+      tags:
+      - Sku
+    post:
+      operationId: upsertInventory
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: groupId
+        required: true
+        schema:
+          description: Group to filter (Liferay site)
+          example: 30130
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/Inventory"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/Inventory"
+          description: Created
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.write
+      summary: Creates or updates a Inventory related to a Sku.
+      tags:
+      - Sku
+  "/user/":
+    get:
+      operationId: getUsers
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/User"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Users.
+      tags:
+      - User
+      x-liferay-context:
+      - themedisplay
+    post:
+      operationId: upsertUser
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/User"
+        required: true
+      responses:
+        '201':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/User"
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.admin
+      summary: Creates or updates a User.
+      tags:
+      - User
+      x-liferay-context:
+      - themedisplay
+  "/user/{id}":
+    delete:
+      operationId: deleteUser
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: No content
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.admin
+      summary: Deletes a User by ID.
+      tags:
+      - User
+    get:
+      operationId: getUser
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/User"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a User by ID.
+      tags:
+      - User
+      x-liferay-context:
+      - themedisplay
+    put:
+      operationId: updateUser
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/*:
+            schema:
+              "$ref": "#/components/schemas/User"
+        required: true
+      responses:
+        '202':
+          description: Async
+        '204':
+          description: No content
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.admin
+      summary: Updates a User by ID.
+      tags:
+      - User
+  "/webSite/":
+    get:
+      operationId: getWebSites
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                items:
+                  "$ref": "#/components/schemas/WebSite"
+                type: array
+          description: Successful operation
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a list of Web Sites.
+      tags:
+      - WebSite
+      x-liferay-context:
+      - language
+  "/webSite/{id}":
+    get:
+      operationId: getWebSite
+      parameters:
+      - examples:
+          externalId:
+            summary: External idenfitifer
+            value: ext-uniqueId
+          localId:
+            summary: Local identifier
+            value: '23456'
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The resource Id, or external reference code Id if it's prefixed
+            with ext-
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/*:
+              schema:
+                "$ref": "#/components/schemas/WebSite"
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '401':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Authentication information is missing or invalid
+        '404':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: The specified resource was not found
+        '500':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+          description: Unexpected error
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2:
+        - CommerceOpenApiAdmin.read
+      summary: Gets a Web Site by ID.
+      tags:
+      - WebSite
+      x-liferay-context:
+      - language
+servers:
+- description: Liferay Commerce API server
+  url: https://commerce.{environment}.liferay.com/commerce-admin/{basePath}
+  variables:
+    basePath:
+      default: v2.0
+    environment:
+      default: api
+      enum:
+      - api
+      - api.dev
+      - api.uat
+- description: Liferay Commerce Local Development (Hosts file)
+  url: "{protocol}://{host}:{port}/o/commerce-admin/{basePath}"
+  variables:
+    basePath:
+      default: v2.0
+    host:
+      default: test.dev
+    port:
+      default: '8080'
+      enum:
+      - '443'
+      - '8080'
+      - '8443'
+    protocol:
+      default: http
+      enum:
+      - http
+      - https
+- description: Liferay Commerce Local Development with Ngrok
+  url: "{protocol}://{host}.ngrok.io/o/commerce-admin/{basePath}"
+  variables:
+    basePath:
+      default: v2.0
+    host:
+      default: commerce
+    protocol:
+      default: http
+      enum:
+      - http
+      - https
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/liferay6/commerce-admin/v2.0
+tags:
+- description: Operations on Account
+  name: Account
+- description: Operations on Addresses
+  name: Address
+- description: Operations on Countries
+  name: Country
+- description: Operations on Currencies
+  name: Currency
+- description: Operations on Inventories
+  name: Inventory
+- description: Operations on Orders
+  name: Order
+- description: Operations on Price Entry
+  name: PriceEntry
+- description: Operations on Price Lists
+  name: PriceList
+- description: Operations on Product Option Values
+  name: ProductOptionValue
+- description: Operations on Product Options
+  name: ProductOption
+- description: Operations on Products
+  name: Product
+- description: Operations on Regions
+  name: Region
+- description: Operations on Skus
+  name: Sku
+- description: Operations on Users
+  name: User
+- description: Operations on Web Sites
+  name: WebSite
