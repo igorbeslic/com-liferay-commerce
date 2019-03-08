@@ -1,0 +1,4640 @@
+openapi: 3.0.0
+servers:
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/liferay6/commerce-admin/v2.0
+  - description: Liferay Commerce API server
+    url: https://commerce.{environment}.liferay.com/commerce-admin/{basePath}
+    variables:
+      basePath:
+        default: 'v2.0'
+      environment:
+        default: api    # Production server
+        enum:
+          - api         # Production server
+          - api.dev     # Development server
+          - api.uat     # UAT server
+  - description: Liferay Commerce Local Development with Ngrok
+    url: '{protocol}://{host}.ngrok.io/o/commerce-admin/{basePath}'
+    variables:
+      host:
+        default: 'commerce'
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+      basePath:
+        default: 'v2.0'
+  - description: Liferay Commerce Local Development (Hosts file)
+    url: '{protocol}://{host}:{port}/o/commerce-admin/{basePath}'
+    variables:
+      host:
+        default: 'test.dev'
+      port:
+        enum:
+          - '8080'
+          - '8443'
+          - '443'
+        default: '8080'
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+      basePath:
+        default: 'v2.0'
+
+info:
+  description: Liferay Commerce Admin API
+  version: "v2.0"
+  title: Liferay Commerce Admin API
+  contact:
+    name: Commerce Team
+    email: team-commerce@liferay.com
+  license:
+    name: GNU Lesser General Public License 2.1
+    url: 'https://www.gnu.org/licenses/lgpl-2.1.html'
+
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- #
+# --- --- --- --- --- --- --- OPERATIONS  --- --- --- --- --- --- --- --- --- #
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- #
+
+paths:
+  /account/{id}/logo/:
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertAccountLogo
+      summary: Creates or updates an Account Logo.
+      tags:
+        - 'Account'
+      parameters:
+      - $ref: '#/components/parameters/idPathParam'
+      requestBody: 
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                logo:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /account/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getAccount
+      summary: Gets an Account by ID.
+      tags:
+        - 'Account'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'   
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateAccount
+      summary: Updates an Account by ID.
+      tags:
+        - 'Account'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteAccount
+      summary: Deletes an Account by ID.
+      tags:
+        - 'Account'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+
+  /account/{id}/address:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getAddresses
+      summary: Gets a list of Addresses related to an Account.
+      tags:
+        - 'Account'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/Address'
+            application/xml:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/Address'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: addAddress
+      summary: Creates an Address.
+      tags:
+        - 'Account'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /account/{id}/order:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getAccountOrders
+      summary: Gets the List of orders from a site related to an account
+      tags:
+        - 'Account'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertOrder
+      summary: Creates or updates a Order related to an Account.
+      tags:
+        - 'Account'
+      parameters:
+      - $ref: '#/components/parameters/idPathParam'
+      - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /account/:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getAccounts
+      summary: Gets a list of Accounts.
+      tags:
+        - 'Account'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertAccount
+      summary: Creates or updates an Account.
+      tags:
+        - 'Account'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /country/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getCountry
+      summary: Gets a Country by ID.
+      tags:
+        - 'Country'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Country'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Country'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateCountry
+      summary: Updates a Country by ID.
+      tags:
+        - 'Country'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Country'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Country'
+      responses:
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteCountry
+      summary: Deletes a Country by ID.
+      tags:
+        - 'Country'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+
+  /country/{id}/region:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getRegions
+      summary: Gets a list of Regions related to a Country.
+      tags:
+        - 'Country'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Region'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Region'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertRegion
+      summary: Creates or updates a Region.
+      tags:
+        - 'Country'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Region'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Region'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Region'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Region'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+  /country/:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getCountries
+      summary: Gets a list of Countries.
+      tags:
+        - 'Country'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertCountry
+      summary: Creates or updates a Country.
+      tags:
+        - 'Country'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Country'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Country'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Country'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Country'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /currency/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getCurrency
+      summary: Gets a Currency by ID.
+      tags:
+        - 'Currency'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Currency'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Currency'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateCurrency
+      summary: Updates a Currency by ID.
+      tags:
+        - 'Currency'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Currency'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Currency'
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteCurrency
+      summary: Deletes a Currency by ID.
+      tags:
+        - 'Currency'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+    
+  /currency/:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getCurrencies
+      summary: Gets a list of Currencies.
+      tags:
+        - 'Currency'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertCurrency
+      summary: Creates or updates a Currency.
+      tags:
+        - 'Currency'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Currency'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Currency'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Currency'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Currency'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /inventory/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getInventory
+      summary: Gets a Inventory by ID.
+      tags:
+        - 'Inventory'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateInventory
+      summary: Updates a Inventory by ID.
+      tags:
+        - 'Inventory'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - $ref: '#/components/parameters/groupQueryParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inventory'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Inventory'
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteInventory
+      summary: Deletes a Inventory by ID.
+      tags:
+        - 'Inventory'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+  /sku/{id}/inventory:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getInventories
+      summary: Gets a list of Inventories.
+      tags:
+        - 'Sku'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inventory'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inventory'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertInventory
+      summary: Creates or updates a Inventory related to a Sku.
+      tags:
+        - 'Sku'
+      parameters:
+      - $ref: '#/components/parameters/idPathParam'
+      - $ref: '#/components/parameters/groupQueryParam'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inventory'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Inventory'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /order/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getOrder
+      summary: Gets a Order by ID.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateOrder
+      summary: Updates a Order by ID.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteOrder
+      summary: Deletes a Order by ID.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+
+  /order/{id}/orderItem/{orderItemId}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getOrderItem
+      summary: Gets an Order Item by ID.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - in: path
+          name: orderItemId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            description: The order item Id, or its external reference code Id if it's prefixed with ext-
+          examples:
+            localId:
+              value: '23456'
+              summary: Local identifier
+            externalId:
+              value: 'ext-uniqueId'
+              summary: External idenfitifer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateOrderItem
+      summary: Updates an Order Item by ID.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - in: path
+          name: orderItemId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            description: The order item Id, or its external reference code Id if it's prefixed with ext-
+          examples:
+            localId:
+              value: '23456'
+              summary: Local identifier
+            externalId:
+              value: 'ext-uniqueId'
+              summary: External idenfitifer
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteOrderItem
+      summary: Deletes an Order Item by ID.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - in: path
+          name: orderItemId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            description: The order item Id, or its external reference code Id if it's prefixed with ext-
+          examples:
+            localId:
+              value: '23456'
+              summary: Local identifier
+            externalId:
+              value: 'ext-uniqueId'
+              summary: External idenfitifer
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+
+  /order/{id}/orderItem:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getOrderItems
+      summary: Gets a list of Order Items related to an Order.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderItem'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderItem'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertOrderItem
+      summary: Creates or updates an Order Item.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /order/{id}/orderNote/{orderNoteId}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getOrderNote
+      summary: Gets an Order Note by ID.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - in: path
+          name: orderNoteId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            description: The order note Id, or its external reference code Id if it's prefixed with ext-
+          examples:
+            localId:
+              value: '23456'
+              summary: Local identifier
+            externalId:
+              value: 'ext-uniqueId'
+              summary: External idenfitifer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderNote'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderNote'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateOrderNote
+      summary: Updates an Order Note by ID.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - in: path
+          name: orderNoteId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            description: The order note Id, or its external reference code Id if it's prefixed with ext-
+          examples:
+            localId:
+              value: '23456'
+              summary: Local identifier
+            externalId:
+              value: 'ext-uniqueId'
+              summary: External idenfitifer
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderNote'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/OrderNote'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderNote'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderNote'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteOrderNote
+      summary: Deletes an Order Note by ID.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - in: path
+          name: orderNoteId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            description: The order note Id, or its external reference code Id if it's prefixed with ext-
+          examples:
+            localId:
+              value: '23456'
+              summary: Local identifier
+            externalId:
+              value: 'ext-uniqueId'
+              summary: External idenfitifer
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+
+  /order/{id}/orderNote:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getOrderNotes
+      summary: Gets a list of Order Notes related to an Order.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderNote'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderNote'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertOrderNote
+      summary: Creates or updates an Order Note.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderNote'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/OrderNote'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderNote'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderNote'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /order/{id}/billingAddress:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getBillingAddress
+      summary: Gets a billing Address related to an Order.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateBillingAddress
+      summary: Updates a billing Address related to an Order.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /order/{id}/shippingAddress:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getShippingAddress
+      summary: Gets a shipping Address related to an Order.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateShippingAddress
+      summary: Updates a shipping Address related to an Order.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /order:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getOrders
+      summary: Gets a List of Orders from a Site.
+      tags:
+        - 'Order'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /priceEntry/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getPriceEntry
+      summary: Gets a Price Entry by ID.
+      tags:
+        - 'PriceEntry'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceEntry'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PriceEntry'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'   
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updatePriceEntry
+      summary: Updates a Price Entry by ID.
+      tags:
+        - 'PriceEntry'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceEntry'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PriceEntry'
+      responses:
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deletePriceEntry
+      summary: Deletes a Price Entry by ID.
+      tags:
+        - 'PriceEntry'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+  /priceEntry/:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getPriceEntries
+      summary: Gets a list of Price Entries.
+      tags:
+        - 'PriceEntry'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceEntry'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceEntry'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertPriceEntry
+      summary: Creates or updates a Price Entry.
+      tags:
+        - 'PriceEntry'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceEntry'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PriceEntry'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceEntry'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PriceEntry'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /priceList/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getPriceList
+      summary: Gets a Price List by ID.
+      tags:
+        - 'PriceList'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PriceList'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'   
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updatePriceList
+      summary: Updates a Price List by ID.
+      tags:
+        - 'PriceList'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PriceList'
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deletePriceList
+      summary: Deletes a Price List by ID.
+      tags:
+        - 'PriceList'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+  /priceList/:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getPriceLists
+      summary: Gets a list of Price Lists.
+      tags:
+        - 'PriceList'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceList'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceList'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertPriceList
+      summary: Creates or updates a Price List.
+      tags:
+        - 'PriceList'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PriceList'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PriceList'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /product/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getProduct
+      summary: Gets a Product by ID.
+      tags:
+        - 'Product'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateProduct
+      summary: Updates a Product by ID.
+      tags:
+        - 'Product'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteProduct
+      summary: Deletes a Product by ID.
+      tags:
+        - 'Product'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+  /product/:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getProducts
+      summary: Gets a list of Products.
+      tags:
+        - 'Product'
+      parameters:
+      - $ref: '#/components/parameters/groupQueryParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertProduct
+      summary: Creates or updates a Product.
+      tags:
+        - 'Product'
+      parameters:
+      - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /productOption/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getProductOption
+      summary: Gets a Product Option by ID.
+      tags:
+        - 'ProductOption'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOption'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ProductOption'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'   
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateProductOption
+      summary: Updates a Product Option by ID.
+      tags:
+        - 'ProductOption'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductOption'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ProductOption'
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteProductOption
+      summary: Deletes a Product Option by ID.
+      tags:
+        - 'ProductOption'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+  /productOption/:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getProductOptions
+      summary: Gets a list of Product Option.
+      tags:
+        - 'ProductOption'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductOption'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductOption'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertProductOption
+      summary: Creates or updates a Product Option.
+      tags:
+        - 'ProductOption'
+      parameters:
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'        
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductOption'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ProductOption'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOption'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ProductOption'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /productOptionValue/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getProductOptionValue
+      summary: Gets a Product Option Value by ID.
+      tags:
+        - 'ProductOptionValue'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOptionValue'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ProductOptionValue'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateProductOptionValue
+      summary: Updates a Product Option Value by ID.
+      tags:
+        - 'ProductOptionValue'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductOptionValue'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ProductOptionValue'
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteProductOptionValue
+      summary: Deletes a Product Option Value by ID.
+      tags:
+        - 'ProductOptionValue'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+  /productOption/{id}/productOptionValue:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getProductOptionValues
+      summary: Gets a list of Values related to a Product Option.
+      tags:
+        - 'ProductOptionValue'
+      parameters:
+      - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductOptionValue'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductOptionValue'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertProductOptionValue
+      summary: Creates or updates a Value related to a Product Option.
+      tags:
+        - 'ProductOptionValue'
+      parameters:
+      - $ref: '#/components/parameters/idPathParam'
+      - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductOptionValue'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ProductOptionValue'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOptionValue'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ProductOptionValue'
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /region/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getRegion
+      summary: Gets a Region by ID.
+      tags:
+        - 'Region'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Region'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Region'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateRegion
+      summary: Updates a Region by ID.
+      tags:
+        - 'Region'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Region'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Region'
+      responses:
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteRegion
+      summary: Deletes a Region by ID.
+      tags:
+        - 'Region'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+
+  /sku/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getSku
+      summary: Gets a Sku by ID.
+      tags:
+        - 'Sku'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sku'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Sku'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: updateSku
+      summary: Updates a Sku by ID.
+      tags:
+        - 'Sku'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sku'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Sku'
+      responses:
+        '201':
+          description: Created
+        '202':
+          description: Async
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: deleteSku
+      summary: Deletes a Sku by ID.
+      tags:
+        - 'Sku'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+           
+  /product/{id}/sku:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getSkus
+      summary: Gets a list of Skus related to a Product.
+      tags:
+        - 'Product'
+      parameters:
+      - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sku'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sku'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.write]
+      operationId: upsertSku
+      summary: Creates or updates a Sku related to a Product.
+      tags:
+        - 'Product'
+      parameters:
+      - $ref: '#/components/parameters/idPathParam'
+      - $ref: '#/components/parameters/groupQueryParam'
+      x-liferay-context:
+        - 'language'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sku'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Sku'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sku'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Sku'
+        '202':
+          description: Accepted - Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /user/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getUser
+      summary: Gets a User by ID.
+      tags:
+        - 'User'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'themedisplay'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'   
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          
+    put:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.admin]
+      operationId: updateUser
+      summary: Updates a User by ID.
+      tags:
+        - 'User'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '202':
+          description: Async
+        '204':
+          description: No content
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.admin]
+      operationId: deleteUser
+      summary: Deletes a User by ID.
+      tags:
+        - 'User'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: No content
+        '401':
+           $ref: '#/components/responses/UnauthorizedError'
+  /user/:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getUsers
+      summary: Gets a list of Users.
+      tags:
+        - 'User'
+      x-liferay-context:
+        - 'themedisplay'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.admin]
+      operationId: upsertUser
+      summary: Creates or updates a User.
+      tags:
+        - 'User'
+      x-liferay-context:
+        - 'themedisplay'
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '202':
+          description: Async
+        '204':
+          description: Updated
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /webSite/{id}:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getWebSite
+      summary: Gets a Web Site by ID.
+      tags:
+        - 'WebSite'
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebSite'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WebSite'
+        '400':
+          description: Invalid input
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'   
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          
+  /webSite/:
+    get:
+      security:
+      - BasicAuth: []
+      - BearerAuth: []
+      - OAuth2: [CommerceOpenApiAdmin.read]
+      operationId: getWebSites
+      summary: Gets a list of Web Sites.
+      tags:
+        - 'WebSite'
+      x-liferay-context:
+        - 'language'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebSite'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebSite'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /priceListTest/:
+    get:
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Collection"
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/PriceList'
+
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- #
+# --- --- --- --- --- --- --- COMPONENTS  --- --- --- --- --- --- --- --- --- #
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- #
+components:
+# ---         ---          --- PARAMETERS  ---            ---             --- #
+  parameters:
+# ---         ---          - PATH PARAMETERS -            ---             --- #
+    idPathParam:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        description: The resource Id, or external reference code Id if it's prefixed with ext-
+      examples:
+        localId:
+          value: '23456'
+          summary: Local identifier
+        externalId:
+          value: 'ext-uniqueId'
+          summary: External idenfitifer
+          
+    id2PathParam:
+      in: path
+      name: id2
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        description: The resource Id, or external reference code Id if it's prefixed with ext-
+      examples:
+        localId:
+          value: '23456'
+          summary: Local identifier
+        externalId:
+          value: 'ext-uniqueId'
+          summary: External idenfitifer
+
+# ---        ---           - QUERY PARAMETERS -             ---           --- #
+
+    groupQueryParam:
+      in: query
+      name: groupId
+      required: true
+      schema:
+        type: integer
+        format: int64
+        minimum: 0
+        description: Group to filter (Liferay site)
+        example: 30130
+
+# ---         ---           --- SCHEMAS  ---             ---            --- #
+
+  schemas:
+    Collection:
+      type: object
+      properties:
+        totalItems:
+          format: int64
+          type: integer
+          readOnly: true
+          example: 100
+        numberOfItems:
+            format: int64
+            type: integer
+            readOnly: true
+            example: 10
+    Account:
+      required:
+        - name
+        - externalReferenceCode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+          example: [
+            {
+              id: 31130,
+              city: 'Diamond Bar',
+              commerceCountryId: 30130,
+              commerceRegionId: 30234,
+              defaultBilling: true,
+              defaultShipping: true,
+              description: 'right stairs, first room on the left',
+              latitude: 33.9976884,
+              longitude: -117.8144595,
+              name: 'Alessio Antonio Rendina',
+              phoneNumber: '(123) 456 7890',
+              street1: '1400 Montefino Ave',
+              street2: '1st floor',
+              street3: 'suite 200',
+              zip: '91765'
+            }
+          ]
+        emailAddresses:
+          type: array
+          items:
+            type: string
+            format: email
+          example: ['joe.1@commerce.com', 'joe.2@commerce.com', 'joe.3@commerce.com']
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        logoId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 20078
+        name:
+          type: string
+          example: 'Account Name'
+        organizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountOrganization'
+          example: [
+            {
+              id: 20546,
+              name: 'Liferay Italy',
+              organizationId: 20433,
+              treePath: '/Liferay/Liferay Italy'
+            }
+          ]
+        root:
+          type: boolean
+          example: true
+        taxId:
+          type: string
+          example: 'Abcd1234'
+        type:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2
+          example: 1
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountMember'
+          example: [
+            {
+              id: 31256,
+              name: 'Alessio Antonio Rendina',
+              userId: 30002,
+              roles: [
+                {
+                  description: {
+                    "hu_HU": "Account Administrator Description HU",
+                    "hr_HR": "Account Administrator Description HR",
+                    "en_US": "Account Administrator Description US"
+                  },
+                  id: 30021,
+                  name: 'Account Administrator',
+                  title: {
+                    "hu_HU": "Account Administrator HU",
+                    "hr_HR": "Account Administrator HR",
+                    "en_US": "Account Administrator US"
+                  }
+                }
+              ]
+            }
+          ]
+          
+    AccountMember:
+      required:
+        - commerceAccountId
+        - userId
+      type: object
+      properties:
+        commerceAccountId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        name:
+          type: string
+          example: 'User Name'
+        userId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30002
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountRole'
+          example: [
+            {
+              description: {
+                "hu_HU": "Account Administrator Description HU",
+                "hr_HR": "Account Administrator Description HR",
+                "en_US": "Account Administrator Description US"
+              },
+              id: 30021,
+              name: 'Account Administrator',
+              title: {
+                "hu_HU": "Account Administrator HU",
+                "hr_HR": "Account Administrator HR",
+                "en_US": "Account Administrator US"
+              }
+            },
+            {
+              description: {
+                "hu_HU": "Order Manager Description HU",
+                "hr_HR": "Order Manager Description HR",
+                "en_US": "Order Manager Description US"
+              },
+              id: 30023,
+              name: 'Order Manager',
+              title: {
+                "hu_HU": "Order Manager HU",
+                "hr_HR": "Order Manager HR",
+                "en_US": "Order Manager US"
+              }
+            }
+          ]
+          
+    AccountOrganization:
+      required:
+        - commerceAccountId
+        - organizationId
+      type: object
+      properties:
+        commerceAccountId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        name:
+          type: string
+          example: 'Organization Name'
+        organizationId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30002
+        treePath:
+          type: string
+          example: '/Parent Organization/Organization Name'
+          
+    AccountRole:
+      required:
+        - name
+      type: object
+      properties:
+        description:
+          type: object
+          additionalProperties:
+            type: string
+          example: {
+            "hu_HU": "Role Description HU",
+            "hr_HR": "Role Description HR",
+            "en_US": "Role Description US"
+          }
+        name:
+          type: string
+          example: 'Role Name'
+        roleId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        title:
+          type: object
+          additionalProperties:
+            type: string
+          example: {
+            "hu_HU": "Role Title HU",
+            "hr_HR": "Role Title HR",
+            "en_US": "Role Title US"
+          }
+
+    Address:
+      required:
+        - city
+        - commerceCountryId
+        - name
+        - street1
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 31130
+        city:
+          type: string
+          example: 'Diamond Bar'
+        commerceCountryId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        commerceRegionId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30234
+        defaultBilling:
+          type: boolean
+          example: true
+        defaultShipping:
+          type: boolean
+          example: true
+        description:
+          type: string
+          example: 'right stairs, first room on the left'
+        latitude:
+          type: number
+          format: double
+          example: 33.9976884
+        longitude:
+          type: number
+          format: double
+          example: -117.8144595
+        name:
+          type: string
+          example: 'Alessio Antonio Rendina'
+        phoneNumber:
+          type: string
+          example: '(123) 456 7890'
+        street1:
+          type: string
+          example: '1400 Montefino Ave'
+        street2:
+          type: string
+          example: '1st floor'
+        street3:
+          type: string
+          example: 'suite 200'
+        zip:
+          type: string
+          example: '91765'
+
+    Country:
+      required:
+        - name
+        - numericISOCode
+        - threeLettersISOCode
+        - twoLettersISOCode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        billingAllowed:
+          type: boolean
+          example: true
+        name:
+          type: object
+          additionalProperties:
+            type: string
+          example: {
+            "hu_HU": "Horvatorszag",
+            "hr_HR": "Hrvatska",
+            "en_US": "Croatia"
+          }
+        numericISOCode:
+          type: integer
+          example: 191
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Region'
+          example: [
+            {
+              commerceCountryId: 30130,
+              name: 'California',
+              code: 'CA',
+              priority: 1.1,
+              active: true,
+              id: 30234
+            },
+            {
+              commerceCountryId: 30130,
+              name: 'Texas',
+              code: 'TX',
+              priority: 1.2,
+              active: true,
+              id: 30243
+            }
+          ]
+        shippingAllowed:
+          type: boolean
+          example: true
+        subjectToVAT:
+          type: boolean
+          example: true
+        threeLettersISOCode:
+          type: string
+          example: 'HRV'
+        twoLettersISOCode:
+          type: string
+          example: 'HR'
+        
+    Currency:
+      required:
+        - name
+        - code
+        - rate
+        - formatPattern
+        - roundingMode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 30130
+        code:
+          type: string
+          example: 'USD'
+        name:
+          type: object
+          additionalProperties:
+            type: string
+          example: {
+              "en_US": "US Dollar"
+            }
+        rate:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 1.00
+        formatPattern:
+          type: object
+          additionalProperties:
+            type: string
+          example: {
+              "en_US": "$###,##0.00"
+            }
+        maxFractionDigits:
+          type: integer
+          example: 2
+        minFractionDigits:
+          type: integer
+          example: 2
+        roundingMode:
+          type: string
+          example: 'HALF_EVEN'
+        primary:
+          type: boolean
+          example: true
+        
+    Error:
+      required:
+        - message
+        - status
+        - errorCode
+        - errorDescription
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          example: 'No CommerceCurrency exists with the key {groupId=41811, code=US Dollar}'
+        errorDescription:
+          type: string
+          readOnly: true
+          example: 'Unable to find currency. Currency code should be expressed with 3-letter ISO 4217 format.'
+        status:
+          type: integer
+          readOnly: true
+          example: 404
+          description: 'HTTP Status code'
+        errorCode:
+          type: integer
+          readOnly: true
+          example: 996
+          description: 'Internal error code mapping'
+    Inventory:
+      required:
+        - quantity
+        - skuExternalReferenceCode
+        - skuId
+        - warehouseId
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        quantity:
+          type: integer
+          example: 10
+        skuExternalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        skuId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        warehouseId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        warehouseName:
+          type: string
+          example: '660 Park Ave'
+
+    Order:
+      required:
+        - commerceAccountId
+        - externalReferenceCode
+        - currency
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        advanceStatus:
+          type: string
+          example: 'trasmitted'
+        billingAddress:
+          $ref: '#/components/schemas/Address'
+        billingAddressId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 31130
+        commerceAccountId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        currency:
+          type: string
+          example: 'USD'
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        orderStatus:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 0
+        paymentMethod:
+          type: string
+          example: 'paypal'
+        paymentStatus:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 0
+        purchaseOrderNumber:
+          type: string
+          example: 'Abcd1234'
+        shippingAddress:
+          $ref: '#/components/schemas/Address'
+        shippingAddressId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 31130
+        shippingAmount:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 12
+        shippingMethod:
+          type: string
+          example: 'fixed'
+        shippingOption:
+          type: string
+          example: 'by Air'
+        subtotal:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 101
+        total:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 113
+
+    OrderItem:
+      required:
+        - commerceOrderId
+        - skuId
+        - externalReferenceCode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        commerceOrderId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30128
+        discountAmount:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 2
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        finalPrice:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 200
+        name:
+          type: object
+          additionalProperties:
+            type: string
+          example: {
+            "hu_HU": "Product Name HU",
+            "hr_HR": "Product Name HR",
+            "en_US": "Hand Saw"
+          }
+        quantity:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 2
+        shippedQuantity:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 1
+        sku:
+          type: string
+          example: '12341234'
+        skuId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30128
+        subscription:
+          type: boolean
+          example: true
+        unitPrice:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 101
+
+    OrderNote:
+      required:
+        - commerceOrderId
+        - externalReferenceCode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        author:
+          type: string
+          example: 'Alessio Antonio Rendina'
+        commerceOrderId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30128
+        content:
+          type: string
+          example: 'This order will be shipped separately'
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        restricted:
+          type: boolean
+          example: true
+
+    PriceEntry:
+      required:
+        - commercePriceListId
+        - price
+        - promoPrice
+        - standardPrice
+        - externalReferenceCode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        commercePriceListId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 20078
+        commerceProductInstanceId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        hasTierPrice:
+          type: boolean
+          example: true
+        standardPrice:
+          type: boolean
+          example: true
+        price:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 30130
+        promoPrice:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 30130
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        skuExternalReferenceCode:
+          type: string
+          example: 'CAB-34098-789-N'
+        sku:
+          type: string
+          example: 'Blue handle, 00001l, 70cm, lifetime warranty'
+
+    PriceList:
+      required:
+        - active
+        - externalReferenceCode
+        - neverExpire
+        - priority
+        - currency
+        - name
+      type: object
+      properties:
+        displayDate:
+          type: string
+          format: date
+          example: '2017-07-21'
+        expirationDate:
+          type: string
+          format: date
+          example: '2017-08-21'
+        commercePriceListId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 20178
+        neverExpire:
+          type: boolean
+          example: true
+        priority:
+          type: number
+          format: double
+          example: 1.2
+        active:
+          type: boolean
+          example: true
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        currency:
+          type: string
+          example: 'EUR'
+        name:
+          type: string
+          example: 'Laptops, Beverages'
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+
+    Product:
+      required:
+        - name
+        - active
+        - externalReferenceCode
+        - productTypeName
+      type: object
+      properties:
+        name:
+          type: object
+          additionalProperties:
+            type: string
+          example: {
+              "hu_HU": "Product Name HU",
+              "hr_HR": "Product Name HR",
+              "en_US": "Hand Saw"
+            }
+        description:
+          type: object
+          additionalProperties:
+            type: string
+          example: {
+              "hu_HU": "Product Description HU",
+              "hr_HR": "Product Description HR",
+              "en_US": "Professional hand stainless steel saw for wood. Made to last and saw forever. Made of best steel"
+            }
+        assetCategoryIds:
+          type: array
+          items:
+            type: integer
+          example: [20001237, 20210282, 50441007]
+        defaultSku:
+          type: string
+          example: 'Blue handle, 00001l, 70cm, lifetime warranty'
+        shortDescription:
+          type: object
+          additionalProperties:
+            type: string
+          example: {
+              "hu_HU": "Product Short Description HU",
+              "hr_HR": "Product Short Description HR",
+              "en_US": "Hand stainless steel saw for wood"
+            }
+        active:
+          type: boolean
+          example: true
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        productTypeName:
+          type: string
+          example: 'simple'
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        expando:
+          type: object
+          additionalProperties: true
+        skus:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sku'
+          example: [
+            {
+              id : 37168,
+              cost : 2.0,
+              depth : 5.0,
+              displayDate : '2018-01-25',
+              expirationDate : '2019-03-14',
+              externalReferenceCode : '12345',
+              gtin : null,
+              height : 10.0,
+              manufacturerPartNumber : '56789',
+              neverExpire : false,
+              price : 3.83,
+              promoPrice : 16.00,
+              published : true,
+              purchasable : true,
+              sku : '31187390',
+              weight : 30.0,
+              width : 20.0
+            }
+          ]
+
+    ProductOption:
+      required:
+        - name
+        - key
+        - fieldType
+        - externalReferenceCode
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Color'
+        key:
+          type: string
+          example: 'color'
+        description:
+          type: string
+          example: 'Description'
+        facetable:
+          type: boolean
+          example: true
+        required:
+          type: boolean
+          example: true
+        skuContributor:
+          type: boolean
+          example: true
+        fieldType:
+          type: string
+          enum:
+          - select
+          - radio
+          - date
+          - checkbox
+          - checkbox_multiple 
+          - numeric
+          example: 'select'
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+
+    ProductOptionValue:
+      required:
+        - name
+        - key
+        - externalReferenceCode
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Black'
+        key:
+          type: string
+          example: 'black'
+        priority:
+          type: number
+          format: double
+          example: 1.2
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+          
+    Region:
+      required:
+        - commerceCountryId
+        - name
+      type: object
+      properties:
+        commerceCountryId:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        name:
+          type: string
+          example: 'California'
+        code:
+          type: string
+          example: 'CA'
+        priority:
+          type: number
+          format: double
+          minimum: 0
+          example: 1.1
+        active:
+          type: boolean
+          example: true
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+
+    Sku:
+      required:
+        - sku
+        - externalReferenceCode
+      type: object
+      properties:
+        neverExpire:
+          type: boolean
+          example: true
+        published:
+          type: boolean
+          example: true
+        purchasable:
+          type: boolean
+          example: true
+        cost:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 101
+        depth:
+          type: number
+          format: double
+          minimum: 0
+          example: 1.1
+        height:
+          type: number
+          format: double
+          minimum: 0
+          example: 20.2
+        price:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 101
+        promoPrice:
+          type: number
+          format: bigdecimal
+          minimum: 0
+          example: 202
+        weight:
+          type: number
+          format: double
+          minimum: 0
+          example: 1.1
+        width:
+          type: number
+          format: double
+          minimum: 0
+          example: 20.2
+        displayDate:
+          type: string
+          format: date
+          example: '2017-07-21'
+        expirationDate:
+          type: string
+          format: date
+          example: '2017-08-21'
+        gtin:
+          type: string
+          example: '12341234'
+        manufacturerPartNumber:
+          type: string
+          example: '12341234'
+        sku:
+          type: string
+          example: '12341234'
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+
+    User:
+      required:
+        - email
+        - givenName
+        - familyName
+        - externalReferenceCode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+        birthDate:
+          type: string
+          format: date
+          example: '1996-07-21'
+        commerceAccountIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+          example: [20001237, 20210282, 50441007]
+        image:
+          type: string
+          format: uri
+          example: 'https://commerce.com/userPortrait.jpg'
+        additionalName:
+          type: string
+          example: 'G.I.'
+        alternateName:
+          type: string
+          example: 'Joe'
+        dashboardURL:
+          type: string
+          format: uri
+          example: 'https://commerce.com/dashboardURL'
+        email:
+          type: string
+          format: email
+          example: 'joe@commerce.com'
+        externalReferenceCode:
+          type: string
+          example: 'AB-34098-789-N'
+        familyName:
+          type: string
+          example: 'Smith'
+        gender:
+          type: string
+          example: 'male'
+        givenName:
+          type: string
+          example: 'Joe'
+        jobTitle:
+          type: string
+          example: 'Engineer'
+        name:
+          type: string
+          example: 'G.I. Joe'
+        profileURL:
+          type: string
+          format: uri
+          example: 'https://commerce.com/profileURL'
+        roleNames:
+          type: array
+          items:
+            type: string
+          example: [Admin, User, Power User]
+
+    WebSite:
+      required:
+        - name
+        - description
+      type: object
+      properties:
+        description:
+          type: string
+          example: 'Site for merchandise'
+        name:
+          type: string
+          example: 'Breccia'
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 30130
+
+# ---         ---           --- RESPONSES  ---             ---            --- #
+
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+# ---         ---            --- SECURITY ---              ---            --- #
+
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            CommerceOpenApiAdmin.read: Grants read access
+            CommerceOpenApiAdmin.write: Grants write access
+            CommerceOpenApiAdmin.admin: Grants access to admin operations
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- #
+# --- --- --- --- --- --- --- --- TAGS -- --- --- --- --- --- --- --- --- --- #
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- #
+
+tags:
+  - name: 'Account'
+    description: Operations on Account
+  - name: 'Country'
+    description: Operations on Countries
+  - name: 'Currency'
+    description: Operations on Currencies
+  - name: 'Inventory'
+    description: Operations on Inventories
+  - name: 'Order'
+    description: Operations on Orders
+  - name: 'PriceEntry'
+    description: Operations on Price Entry
+  - name: 'PriceList'
+    description: Operations on Price Lists
+  - name: 'Product'
+    description: Operations on Products
+  - name: 'ProductOption'
+    description: Operations on Product Options
+  - name: 'ProductOptionValue'
+    description: Operations on Product Option Values
+  - name: 'Region'
+    description: Operations on Regions
+  - name: 'Sku'
+    description: Operations on Skus
+  - name: 'User'
+    description: Operations on Users
+  - name: 'WebSite'
+    description: Operations on Web Sites
