@@ -14,7 +14,7 @@
 
 package com.liferay.talend.processor;
 
-import com.liferay.talend.dataset.OpenApi3DataSet;
+import com.liferay.talend.configuration.DefaultComponentConfiguration;
 import org.talend.sdk.component.api.component.Icon;
 import org.talend.sdk.component.api.component.Version;
 import org.talend.sdk.component.api.configuration.Option;
@@ -35,9 +35,8 @@ import java.io.Serializable;
 public class TOpenApi3Processor implements Serializable {
 
 	public TOpenApi3Processor(
-		@Option("configuration")OpenApi3DataSet openApi3DataSet) {
-
-		_openApi3DataSet = openApi3DataSet;
+		@Option("configuration")
+			DefaultComponentConfiguration defaultComponentConfiguration) {
 	}
 
 	@ElementListener
@@ -48,7 +47,5 @@ public class TOpenApi3Processor implements Serializable {
 
 		System.out.println("[" + this + "] Filtering finished");
 	}
-
-	private OpenApi3DataSet _openApi3DataSet;
 
 }

@@ -16,7 +16,6 @@ package com.liferay.talend.source;
 
 import com.liferay.talend.dataset.OpenApi3DataSet;
 import org.talend.sdk.component.api.configuration.Option;
-import org.talend.sdk.component.api.configuration.action.Suggestable;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.meta.Documentation;
 
@@ -26,21 +25,13 @@ import java.io.Serializable;
  * @author Igor Beslic
  */
 @GridLayout({
-    @GridLayout.Row({ "_openApi3DataSet" }),
-	@GridLayout.Row({ "targetModulePath" })
+    @GridLayout.Row({ "_openApi3DataSet" })
 })
 @Documentation("TODO fill the documentation for this configuration")
 public class TOpenApi3MapperConfiguration implements Serializable {
     @Option("_openApi3DataSet")
     @Documentation("TODO fill the documentation for this parameter")
     private OpenApi3DataSet _openApi3DataSet;
-
-	@Documentation("Path of particular module REST service")
-    @Option("targetModulePath")
-	@Suggestable(value = "OpenApi3Paths", parameters = {"_openApi3DataSet"})
-	private String _path;
-
-	makni ovo iz konfiguracije i ostavi kao na salesforcu - sve u datasetu...
 
     public OpenApi3DataSet getDataset() {
         return _openApi3DataSet;
@@ -51,15 +42,5 @@ public class TOpenApi3MapperConfiguration implements Serializable {
 
         return this;
     }
-
-	public String getPath() {
-		return _path;
-	}
-
-	public TOpenApi3MapperConfiguration setPath(String path) {
-		_path = path;
-
-		return this;
-	}
 
 }

@@ -16,6 +16,7 @@ package com.liferay.talend.service;
 
 import com.liferay.talend.client.SwaggerHubClient;
 import com.liferay.talend.dataset.OpenApi3DataSet;
+import com.liferay.talend.datastore.OpenApi3Connection;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.service.Service;
 import org.talend.sdk.component.api.service.completion.DynamicValues;
@@ -54,11 +55,11 @@ public class OpenApi3Service {
 
 	@Suggestions("OpenApi3Paths")
 	public SuggestionValues suggestOpenApi3PathValues(
-		@Option("configuration") final OpenApi3DataSet openApi3DataSet,
+		@Option("_openApi3Connection") final OpenApi3Connection openApi3Connection,
 		final SwaggerHubClient swaggerHubClient) {
 
 		System.out.println(
-			"[" + this + "] openApiDataSet   : " + openApi3DataSet);
+			"[" + this + "] openApiDataSet   : " + openApi3Connection);
 		System.out.println(
 			"[" + this + "] swaggerHubClient : " + swaggerHubClient);
 

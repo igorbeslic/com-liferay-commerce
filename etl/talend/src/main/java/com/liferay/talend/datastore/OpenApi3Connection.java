@@ -17,6 +17,7 @@ package com.liferay.talend.datastore;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.action.Proposable;
 import org.talend.sdk.component.api.configuration.action.Suggestable;
+import org.talend.sdk.component.api.configuration.constraint.Required;
 import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.meta.Documentation;
@@ -41,6 +42,7 @@ public class OpenApi3Connection implements Serializable {
 
     public OpenApi3Connection setEndpointInstanceUrl(URL endpoint) {
         _endpointInstanceUrl = endpoint;
+
         return this;
     }
 
@@ -56,12 +58,12 @@ public class OpenApi3Connection implements Serializable {
 
 	@Option("apiKey")
 	@Documentation("Api key used for authorization header")
-	@Suggestable("OpenApi3ConnectionApiKey")
+	@Required
 	private String _apiKey;
 
     @Option("endpointInstanceUrl")
 	@Documentation("Endpoint instance URL")
-	@Proposable("OpenApi3ConnectionEndpointInstanceUrl")
+	@Required
 	private URL _endpointInstanceUrl;
 
 
