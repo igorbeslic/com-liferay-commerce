@@ -15,6 +15,7 @@
 package com.liferay.talend.datastore;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.action.Proposable;
 import org.talend.sdk.component.api.configuration.action.Suggestable;
 import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
@@ -60,7 +61,7 @@ public class OpenApi3Connection implements Serializable {
 
     @Option("endpointInstanceUrl")
 	@Documentation("Endpoint instance URL")
-	@Suggestable("OpenApi3ConnectionEndpointInstanceUrl")
+	@Proposable("OpenApi3ConnectionEndpointInstanceUrl")
 	private URL _endpointInstanceUrl;
 
 

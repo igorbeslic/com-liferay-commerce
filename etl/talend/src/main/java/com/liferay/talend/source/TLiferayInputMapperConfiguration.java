@@ -19,6 +19,7 @@ import java.io.Serializable;
 import com.liferay.talend.dataset.Dataset;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.action.Suggestable;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.meta.Documentation;
 
@@ -30,7 +31,8 @@ import org.talend.sdk.component.api.meta.Documentation;
     // customize it as much as needed
     @GridLayout.Row({ "dataset" }),
     @GridLayout.Row({ "timeout" }),
-    @GridLayout.Row({ "maxItemsPerRequest" })
+    @GridLayout.Row({ "maxItemsPerRequest" }),
+	@GridLayout.Row({ "targetModulePath" }),
 })
 @Documentation("TODO fill the documentation for this configuration")
 public class TLiferayInputMapperConfiguration implements Serializable {
@@ -45,6 +47,11 @@ public class TLiferayInputMapperConfiguration implements Serializable {
     @Option
     @Documentation("TODO fill the documentation for this parameter")
     private int maxItemsPerRequest;
+
+	@Documentation("Path of particular module REST service")
+    @Option("targetModulePath")
+	@Suggestable("OpenApi3Paths")
+	private String _path;
 
     public Dataset getDataset() {
         return dataset;
@@ -72,4 +79,15 @@ public class TLiferayInputMapperConfiguration implements Serializable {
         this.maxItemsPerRequest = maxItemsPerRequest;
         return this;
     }
+
+	public String getPath() {
+		return _path;
+	}
+
+	public TLiferayInputMapperConfiguration setPath(String path) {
+		_path = path;
+
+		return this;
+	}
+
 }

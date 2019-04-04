@@ -46,11 +46,11 @@ import static java.util.Collections.singletonList;
 public class TOpenApi3Mapper implements Serializable {
 
     public TOpenApi3Mapper(
-		@Option("configuration") final OpenApi3DataSet openApi3DataSet,
+		@Option("configuration") final TOpenApi3MapperConfiguration openApi3MapperConfiguration,
 		final SwaggerHubClient swaggerHubClient,
 		final RecordBuilderFactory recordBuilderFactory) {
 
-    	_openApi3DataSet = openApi3DataSet;
+    	_tOpenApi3MapperConfiguration = openApi3MapperConfiguration;
         _swaggerHubClient = swaggerHubClient;
         _recordBuilderFactory = recordBuilderFactory;
     }
@@ -58,7 +58,7 @@ public class TOpenApi3Mapper implements Serializable {
     @PostConstruct
     public void init() {
 		OpenApi3Connection openApi3Connection =
-			_openApi3DataSet.getDataStore();
+			_tOpenApi3MapperConfiguration.getDataset().getDataStore();
 
 		URL endpointInstanceURL = openApi3Connection.getEndpointInstanceUrl();
 
@@ -80,11 +80,11 @@ public class TOpenApi3Mapper implements Serializable {
     @Emitter
     public TOpenApi3Source createWorker() {
         return new TOpenApi3Source(
-        	_openApi3DataSet, _swaggerHubClient, _recordBuilderFactory);
+        	_tOpenApi3MapperConfiguration.getDataset(), _swaggerHubClient, _recordBuilderFactory);
     }
 
 	private final SwaggerHubClient _swaggerHubClient;
-	private final OpenApi3DataSet _openApi3DataSet;
+	private final TOpenApi3MapperConfiguration _tOpenApi3MapperConfiguration;
 	private final RecordBuilderFactory _recordBuilderFactory;
 
 }

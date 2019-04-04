@@ -14,9 +14,14 @@
 
 package com.liferay.talend.service;
 
+import com.liferay.talend.client.SwaggerHubClient;
+import com.liferay.talend.dataset.OpenApi3DataSet;
+import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.service.Service;
+import org.talend.sdk.component.api.service.completion.DynamicValues;
 import org.talend.sdk.component.api.service.completion.SuggestionValues;
 import org.talend.sdk.component.api.service.completion.Suggestions;
+import org.talend.sdk.component.api.service.completion.Values;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,24 +52,44 @@ public class OpenApi3Service {
 		return suggestionValues;
 	}
 
-	@Suggestions("OpenApi3ConnectionEndpointInstanceUrl")
-	public SuggestionValues suggestEndpointInstanceURL() {
+	@Suggestions("OpenApi3Paths")
+	public SuggestionValues suggestOpenApi3PathValues(
+		@Option("configuration") final OpenApi3DataSet openApi3DataSet,
+		final SwaggerHubClient swaggerHubClient) {
+
+		System.out.println(
+			"[" + this + "] openApiDataSet   : " + openApi3DataSet);
+		System.out.println(
+			"[" + this + "] swaggerHubClient : " + swaggerHubClient);
+
 		SuggestionValues suggestionValues = new SuggestionValues();
 
 		Set<SuggestionValues.Item> items = new HashSet<>();
 
 		items.add(
 			new SuggestionValues.Item(
-				"https://api.swaggerhub.com",
-				"liferay.swagger.api.endpoint.instance.url"));
+				"/path/one", "The First Path"));
 		items.add(
 			new SuggestionValues.Item(
-				"https://api.swaggerhub.com",
-				"liferay.swagger.api.endpoint.instance.url.backup"));
+				"/path/second", "The Second Path"));
 
 		suggestionValues.setItems(items);
 
 		return suggestionValues;
+	}
+
+	@DynamicValues(value = "OpenApi3ConnectionEndpointInstanceUrl")
+	public Values proposeEndpointInstanceURLValues() {
+		Set<Values.Item> items = new HashSet<>();
+
+		items.add(new Values.Item("https://api.swaggerhub.com",
+			"liferay.swagger.api.endpoint.instance.url"));
+		items.add(new Values.Item("https://api.swaggerhub.com",
+			"liferay.swagger.api.endpoint.instance.url.backup"));
+
+		Values values = new Values(items);
+
+		return values;
 	}
 
 }

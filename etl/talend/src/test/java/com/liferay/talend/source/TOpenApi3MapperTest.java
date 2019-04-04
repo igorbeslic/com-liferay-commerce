@@ -24,7 +24,7 @@ public class TOpenApi3MapperTest {
 
 	@Test
 	public void testOpenApiMapper() throws Exception {
-		OpenApi3DataSet openApi3DataSet = _getOpenApi3DataSet();
+		TOpenApi3MapperConfiguration openApi3DataSet = _getOpenApi3DataSet();
 
 		String configQueryString =
 			SimpleFactory.configurationByExample(
@@ -55,7 +55,7 @@ public class TOpenApi3MapperTest {
 
 	@Test
 	public void testOpenApiProcessor() throws Exception {
-		OpenApi3DataSet openApi3DataSet = _getOpenApi3DataSet();
+		TOpenApi3MapperConfiguration openApi3DataSet = _getOpenApi3DataSet();
 
 		String configQueryString =
 			SimpleFactory.configurationByExample(
@@ -84,8 +84,10 @@ public class TOpenApi3MapperTest {
 		Assert.assertEquals(0, results.size());
 	}
 
-	private OpenApi3DataSet _getOpenApi3DataSet()
+	private TOpenApi3MapperConfiguration _getOpenApi3DataSet()
 		throws MalformedURLException {
+
+		TOpenApi3MapperConfiguration openApi3MapperConfiguration = new TOpenApi3MapperConfiguration();
 
 		OpenApi3Connection openApi3Connection = new OpenApi3Connection();
 
@@ -97,7 +99,9 @@ public class TOpenApi3MapperTest {
 
 		openApi3DataSet.setDataStore(openApi3Connection);
 
-		return openApi3DataSet;
+		openApi3MapperConfiguration.setOpenApi3DataSet(openApi3DataSet);
+
+		return openApi3MapperConfiguration;
 	}
 
 }
