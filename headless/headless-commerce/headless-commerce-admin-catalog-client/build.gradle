@@ -1,0 +1,4 @@
+dependencies {
+    compileOnly group: "javax.ws.rs", name: "javax.ws.rs-api", version: "2.1"
+    compileOnly project(":apps:commerce:headless:headless-commerce:headless-commerce-admin-catalog-api")
+}
